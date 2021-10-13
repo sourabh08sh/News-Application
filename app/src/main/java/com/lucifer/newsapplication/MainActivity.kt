@@ -31,6 +31,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun bindUI() = Coroutines.main {
         newsViewModel.news.await().observe(this, Observer {
+            Log.d("NEWSDATA", it.toString())
             Toast.makeText(this@MainActivity, it.size.toString(), Toast.LENGTH_SHORT).show()
         })
     }

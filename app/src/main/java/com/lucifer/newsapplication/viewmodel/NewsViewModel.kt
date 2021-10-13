@@ -15,7 +15,7 @@ class NewsViewModel(private val repository: MainRepository) : ViewModel() {
 
     @DelicateCoroutinesApi
     val news by lazyDeferred {
-        repository.getNews("in", "6b1a0b77fee444ba9f4f35ec635f9129")
+        repository.getNews()
     }
 
 }
