@@ -61,7 +61,7 @@ class MainRepository @Inject constructor(
 
     suspend fun getNews(): LiveData<List<Article>> {
         return withContext(Dispatchers.IO) {
-            fetchNews("in", "6b1a0b77fee444ba9f4f35ec635f9129", 50)
+            fetchNews("in", "", 50)
             newsDatabase.newsDao().getArticles()
         }
     }
@@ -96,7 +96,7 @@ class MainRepository @Inject constructor(
     suspend fun getNewsBackground(notificationManager: NotificationManager) {
         showNotification(applicationContext, notificationManager)
         try {
-            val result = apiService.getNews("in", "6b1a0b77fee444ba9f4f35ec635f9129", 50)
+            val result = apiService.getNews("in", "", 50)
             if (result.body() != null){
                 Log.d("repoApi", result.body()!!.articles.toString())
                 newsLiveData.postValue(Response.Success(result.body()))
