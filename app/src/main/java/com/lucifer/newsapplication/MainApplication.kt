@@ -7,15 +7,18 @@ import androidx.work.PeriodicWorkRequest
 import androidx.work.WorkManager
 import com.jakewharton.threetenabp.AndroidThreeTen
 import com.lucifer.newsapplication.background.NewsWorker
-import com.lucifer.newsapplication.db.NewsDatabase
-import com.lucifer.newsapplication.network.RetrofitHelper
-import com.lucifer.newsapplication.network.RetrofitService
+import com.lucifer.newsapplication.di.AppModule
+import com.lucifer.newsapplication.di.DaggerAppComponent
 import com.lucifer.newsapplication.repository.MainRepository
-import com.lucifer.newsapplication.utils.PreferenceProvider
+import dagger.android.AndroidInjector
+import dagger.android.DispatchingAndroidInjector
+import dagger.android.HasAndroidInjector
 import java.util.concurrent.TimeUnit
+import javax.inject.Inject
 
-class MainApplication : Application() {
-    lateinit var repository: MainRepository
+class MainApplication : Application(), HasAndroidInjector {
+    @Inject
+    lateinit var mInjector: DispatchingAndroidInjector<Any>
 
     override fun onCreate() {
         super.onCreate()
@@ -35,10 +38,14 @@ class MainApplication : Application() {
 
     // as we have to initialize repository again and again so I have initialized it here to make code clean
     private fun initialize() {
-        val apiService = RetrofitHelper.getInstance().create(RetrofitService::class.java)
-        val database = NewsDatabase.getDatabase(applicationContext)
-        val pref = PreferenceProvider(applicationContext)
-        repository = MainRepository(apiService, database, applicationContext, pref)
+        DaggerAppComponent.builder()
+            .appModule(AppModule(this))
+            .build()
+            .inject(this)
+    }
+
+    override fun androidInjector(): AndroidInjector<Any> {
+        return mInjector
     }
 
 }

@@ -5,26 +5,20 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import com.lucifer.newsapplication.utils.Coroutines
 import com.lucifer.newsapplication.viewmodel.NewsViewModel
-import com.lucifer.newsapplication.viewmodel.NewsViewModelFactory
-import kotlinx.coroutines.CoroutineScope
+import dagger.android.AndroidInjection
 import kotlinx.coroutines.DelicateCoroutinesApi
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @DelicateCoroutinesApi
 class MainActivity : AppCompatActivity() {
-    lateinit var newsViewModel: NewsViewModel
+    @Inject lateinit var newsViewModel: NewsViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        AndroidInjection.inject(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-        val repository = (application as MainApplication).repository
-
-        newsViewModel = ViewModelProvider(this, NewsViewModelFactory(repository)).get(NewsViewModel::class.java)
 
         bindUI()
     }

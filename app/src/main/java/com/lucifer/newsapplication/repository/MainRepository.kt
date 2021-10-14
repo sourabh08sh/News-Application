@@ -16,11 +16,12 @@ import kotlinx.coroutines.withContext
 import org.threeten.bp.LocalDateTime
 import org.threeten.bp.temporal.ChronoUnit
 import java.lang.Exception
+import javax.inject.Inject
 
 /* developed repository to handle data fetching from network and local DB and it provides data to view model.
 * it holds references to data source to execute functions for accessing data.*/
 
-class MainRepository(
+class MainRepository @Inject constructor(
     private val apiService: RetrofitService,
     private val newsDatabase: NewsDatabase,
     private val applicationContext: Context,
