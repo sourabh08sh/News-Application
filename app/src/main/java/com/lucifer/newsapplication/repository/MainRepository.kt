@@ -1,9 +1,18 @@
 package com.lucifer.newsapplication.repository
 
+import android.app.Notification
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.app.PendingIntent
 import android.content.Context
+import android.content.Intent
+import android.graphics.Color
+import android.os.Build
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.lucifer.newsapplication.MainActivity
+import com.lucifer.newsapplication.R
 import com.lucifer.newsapplication.db.NewsDatabase
 import com.lucifer.newsapplication.models.Article
 import com.lucifer.newsapplication.models.News
@@ -29,6 +38,12 @@ class MainRepository @Inject constructor(
 ) {
     // developed a mutable live data so we can do changes and as it is a live data we will get to know whenever a change happen.
     private val newsLiveData = MutableLiveData<Response<News>>()
+
+    // declaring variables
+    lateinit var notificationChannel: NotificationChannel
+    private lateinit var builder: Notification.Builder
+    private val channelId = "i.apps.notifications"
+    private val description = "Test notification"
 
     init {
         newsLiveData.observeForever {
@@ -78,7 +93,8 @@ class MainRepository @Inject constructor(
         return ChronoUnit.MINUTES.between(savedAt, LocalDateTime.now()) > 5
     }
 
-    suspend fun getNewsBackground(){
+    suspend fun getNewsBackground(notificationManager: NotificationManager) {
+        showNotification(applicationContext, notificationManager)
         try {
             val result = apiService.getNews("in", "6b1a0b77fee444ba9f4f35ec635f9129", 50)
             if (result.body() != null){
@@ -93,5 +109,38 @@ class MainRepository @Inject constructor(
             Log.d("repoApi", e.message.toString())
             newsLiveData.postValue(Response.Error(e.message.toString()))
         }
+    }
+
+    private fun showNotification(context: Context, notificationManager: NotificationManager) {
+        // Create an explicit intent for an Activity in your app
+        val intent = Intent(context, MainActivity::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        }
+        val pendingIntent: PendingIntent = PendingIntent.getActivity(context, 0, intent, 0)
+
+        // checking if android version is greater than oreo(API 26) or not
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            notificationChannel = NotificationChannel(channelId, description, NotificationManager.IMPORTANCE_HIGH)
+            notificationChannel.enableLights(true)
+            notificationChannel.lightColor = Color.GREEN
+            notificationChannel.enableVibration(false)
+            // Register the channel with the system
+            notificationManager.createNotificationChannel(notificationChannel)
+
+            builder = Notification.Builder(context, channelId)
+                .setContentTitle("Recent News")
+                .setContentText("News have been refreshed.")
+                .setSmallIcon(R.drawable.notification_icon)
+                .setContentIntent(pendingIntent)
+                .setAutoCancel(true)
+        } else {
+            builder = Notification.Builder(context)
+                .setContentTitle("Recent News")
+                .setContentText("News have been refreshed.")
+                .setSmallIcon(R.drawable.notification_icon)
+                .setContentIntent(pendingIntent)
+                .setAutoCancel(true)
+        }
+        notificationManager.notify(1234, builder.build())
     }
 }

@@ -16,6 +16,7 @@
         android:theme="@style/Theme.NewsApplication"
         android:usesCleartextTraffic="true"
         tools:targetApi="m">
+        <activity android:name=".ui.NewsDetailActivity"></activity>
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -23,6 +24,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <service android:name=".background.BackgroundService"/>
+        <receiver android:name=".background.AlarmReceiver"/>
     </application>
 
 </manifest>
