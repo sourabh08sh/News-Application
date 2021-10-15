@@ -6,7 +6,7 @@
 ## About Application
 Architecture Used -> MVVM
 
-Libraries Used -> Dagger2, RoomDB, Retrofit, Glide
+Libraries Used -> Dagger2, RoomDB, Retrofit, Glide, coroutines
 
 API -> https://newsapi.org/docs/endpoints/top-headlines 
 
