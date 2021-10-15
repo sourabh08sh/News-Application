@@ -20,6 +20,12 @@ API -> https://newsapi.org/docs/endpoints/top-headlines
  -> Swipe left to read news
  
  -> A service to refresh the news in the background every 5 mins and show a notification when data is refreshing
+ 
+ 
+##### Result ->
+
+![result](https://user-images.githubusercontent.com/41892669/137454595-9220879d-ca0e-4b51-86b6-bc6e1fb67a5b.gif)
+
 
 
 
