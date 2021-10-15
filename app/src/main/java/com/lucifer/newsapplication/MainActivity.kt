@@ -35,6 +35,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        // it will prepare broadcast receiver.
         val alarm = Intent(this, AlarmReceiver::class.java)
         val alarmRunning =
             PendingIntent.getBroadcast(this, 0, alarm, PendingIntent.FLAG_NO_CREATE) != null
@@ -44,7 +45,7 @@ class MainActivity : AppCompatActivity() {
             alarmManager.setRepeating(
                 AlarmManager.ELAPSED_REALTIME_WAKEUP,
                 SystemClock.elapsedRealtime(),
-                300000,
+                300000, // 5 min in milliseconds
                 pendingIntent
             )
         }

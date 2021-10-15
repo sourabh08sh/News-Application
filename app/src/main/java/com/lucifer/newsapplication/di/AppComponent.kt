@@ -5,6 +5,8 @@ import dagger.Component
 import dagger.android.AndroidInjectionModule
 import javax.inject.Singleton
 
+// di module contains all the dagger classes that are used.
+
 @Singleton
 @Component(
     modules = [

@@ -10,7 +10,7 @@ import com.lucifer.newsapplication.utils.Coroutines
 import dagger.android.AndroidInjection
 import javax.inject.Inject
 
-
+// it runs on a different thread whenever a broadcast receiver calls it.
 class BackgroundService : Service() {
     @Inject
     lateinit var repository: MainRepository
@@ -35,7 +35,7 @@ class BackgroundService : Service() {
 
         Coroutines.io{
             val notificationManager: NotificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
-            repository.getNewsBackground(notificationManager)
+            repository.getNewsBackground(notificationManager) // it is called after every 5 min.
         }
         stopSelf()
     }

@@ -5,6 +5,7 @@ import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Build
 
+// it used to check if device is connected to internet or not.
 class NetworkUtils {
 
     companion object{

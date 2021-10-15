@@ -6,6 +6,7 @@ import androidx.preference.PreferenceManager
 
 private const val KEY_SAVED_AT = "key_saved_at"
 
+// it is used to get and save the recent time at which data is saved in database.
 class PreferenceProvider(context: Context) {
     private val appContext = context.applicationContext
 

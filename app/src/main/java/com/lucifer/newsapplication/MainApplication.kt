@@ -20,7 +20,7 @@ class MainApplication : Application(), HasAndroidInjector {
         initialize()
     }
 
-    // as we have to initialize repository again and again so I have initialized it here to make code clean
+    // used to initialize dagger
     private fun initialize() {
         DaggerAppComponent.builder()
             .appModule(AppModule(this))

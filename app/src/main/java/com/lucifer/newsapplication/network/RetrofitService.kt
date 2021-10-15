@@ -10,7 +10,7 @@ interface RetrofitService {
 
     @GET("top-headlines")
     suspend fun getNews(@Query("country") country:String,
-                        @Query("apiKey") offset:String,
+                        @Query("apiKey") apiKey:String,
                         @Query("pageSize") pageSize:Int) : Response<News>
 
 }

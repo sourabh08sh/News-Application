@@ -61,12 +61,12 @@ class MainRepository @Inject constructor(
 
     suspend fun getNews(): LiveData<List<Article>> {
         return withContext(Dispatchers.IO) {
-            fetchNews("in", "", 50)
+            fetchNews("in", "apiKey", 50)
             newsDatabase.newsDao().getArticles()
         }
     }
 
-    // function to get news data
+    // function to get news data from server.
     private suspend fun fetchNews(country: String, apiKey:String, pageSize:Int){
         if (NetworkUtils.isInternetAvailable(applicationContext)){
             val lastSavedAt = prefs.getLastSavedAt()
@@ -96,7 +96,7 @@ class MainRepository @Inject constructor(
     suspend fun getNewsBackground(notificationManager: NotificationManager) {
         showNotification(applicationContext, notificationManager)
         try {
-            val result = apiService.getNews("in", "", 50)
+            val result = apiService.getNews("in", "apiKey", 50)
             if (result.body() != null){
                 Log.d("repoApi", result.body()!!.articles.toString())
                 newsLiveData.postValue(Response.Success(result.body()))
